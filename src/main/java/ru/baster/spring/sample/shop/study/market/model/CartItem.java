@@ -12,10 +12,11 @@ import java.math.RoundingMode;
 @NoArgsConstructor
 public class CartItem {
     private Long productId;
-    private String name;
+    private String productTitle;
     private int quantity;
     private BigDecimal pricePerProduct;
     private BigDecimal price;
+    private String image;
 
     public void changeQuantity(int delta) {
         quantity += delta;

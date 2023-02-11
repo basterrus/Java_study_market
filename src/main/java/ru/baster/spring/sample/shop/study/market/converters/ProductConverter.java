@@ -2,12 +2,13 @@ package ru.baster.spring.sample.shop.study.market.converters;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.geelbrains.spring.winter.market.dtos.ProductDto;
-import ru.geelbrains.spring.winter.market.entities.Category;
-import ru.geelbrains.spring.winter.market.entities.Product;
-import ru.geelbrains.spring.winter.market.exceptions.ResourceNotFoundException;
-import ru.geelbrains.spring.winter.market.servicies.CategoryService;
-import ru.geelbrains.spring.winter.market.soap.products.ProductSoapDto;
+import ru.baster.spring.sample.shop.study.market.dto.ProductDto;
+import ru.baster.spring.sample.shop.study.market.exception.ResourceNotFoundException;
+import ru.baster.spring.sample.shop.study.market.model.Category;
+import ru.baster.spring.sample.shop.study.market.model.Product;
+import ru.baster.spring.sample.shop.study.market.service.CategoryService;
+import ru.baster.spring.sample.shop.study.market.soap.product.ProductSoapDto;
+
 
 @Component
 @RequiredArgsConstructor

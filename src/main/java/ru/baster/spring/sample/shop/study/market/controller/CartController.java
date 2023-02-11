@@ -1,48 +1,78 @@
 package ru.baster.spring.sample.shop.study.market.controller;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import ru.baster.spring.sample.shop.study.market.exception.ResourceNotFoundException;
-import ru.baster.spring.sample.shop.study.market.model.Product;
-import ru.baster.spring.sample.shop.study.market.service.ProductService;
-import ru.baster.spring.sample.shop.study.market.util.Cart;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import ru.baster.spring.sample.shop.study.market.converters.CartConverter;
+import ru.baster.spring.sample.shop.study.market.dto.CartDto;
+import ru.baster.spring.sample.shop.study.market.repository.ProductRepository;
+import ru.baster.spring.sample.shop.study.market.service.CartService;
+import ru.baster.spring.sample.shop.study.market.util.StringResponse;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.security.Principal;
+import java.util.Objects;
+import java.util.UUID;
 
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/cart")
+@Slf4j
 public class CartController {
+    private final ProductRepository productRepository;
+    private final CartConverter cartConverter;
+    private final CartService cartService;
 
-    private ProductService productService;
-    private Cart cart;
-
-
-    @GetMapping("/add/{product_id}")
-    public void add(@PathVariable(name = "product_id") Long productId,
-                    HttpServletRequest request,
-                    HttpServletResponse response) throws IOException {
-        Product product = productService.findById(productId).orElseThrow(()->new ResourceNotFoundException("Продукт не найден"));
-        cart.addOrIncrement(product);
-        response.sendRedirect(request.getHeader("referer"));
+    @GetMapping("/generate_uuid")
+    public StringResponse generateUuid() {
+        return new StringResponse(UUID.randomUUID().toString());
     }
 
-    @GetMapping("/inc/{product_id}")
-    public String addOrIncrement(@PathVariable(name = "product_id") Long productId)  {
-        cart.increment(productId);
-        return "redirect:/cart";
+    @GetMapping("/{uuid}/add/{id}")
+    public void addToCart(Principal principal, @PathVariable String uuid, @PathVariable Long id) {
+        String targetUuid = getCartUuid(principal, uuid);
+        cartService.add(targetUuid, id);
     }
 
-    @GetMapping("/dec/{product_id}")
-    public String decrementOrRemove(@PathVariable(name = "product_id") Long productId)  {
-        cart.decrementOrRemove(productId);
-        return "redirect:/cart";
+    @GetMapping("/{uuid}")
+    public CartDto getCurrentCart(Principal principal, @PathVariable String uuid) {
+        String targetUuid = getCartUuid(principal, uuid);
+        log.info("cart controller uuid: {}", targetUuid);
+        return cartConverter.entityToDto(cartService.getCurrentCart(targetUuid));
     }
 
-    @GetMapping("/remove/{product_id}")
-    public String remove(@PathVariable(name = "product_id") Long productId)  {
-        cart.remove(productId);
-        return "redirect:/cart";
+    @GetMapping("/{uuid}/delete/{id}")
+    public void deleteProductFromCart(Principal principal, @PathVariable String uuid, @PathVariable Long id) {
+        String targetUuid = getCartUuid(principal, uuid);
+        cartService.deleteProductFromCart(targetUuid, id);
     }
 
+    @GetMapping("/{uuid}/deleteQuantity/{id}")
+    public void deleteAllQuantity(Principal principal, @PathVariable String uuid, @PathVariable Long id) {
+        String targetUuid = getCartUuid(principal, uuid);
+        cartService.deleteAllQuantity(targetUuid, id);
+    }
+
+    @GetMapping("/{uuid}/clear")
+    public void clearCart(Principal principal, @PathVariable String uuid) {
+        String targetUuid = getCartUuid(principal, uuid);
+        cartService.clear(targetUuid);
+    }
+
+    @GetMapping("/merge/{uuid}")
+    public void mergeGuestCart(@PathVariable String uuid, Principal principal) {
+        String targetUuid = getCartUuid(principal, uuid);
+        cartService.mergeCart(uuid, targetUuid);
+    }
+
+    private String getCartUuid(Principal principal, String uuid) {
+        if (Objects.nonNull(principal)) {
+            return principal.getName();
+        }
+        return uuid;
+    }
 
 }

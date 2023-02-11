@@ -1,12 +1,11 @@
 package ru.baster.spring.sample.shop.study.market.model;
 
-
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -47,20 +46,5 @@ public class OrderItem {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public OrderItem(Product product){
-        this.product = product;
-        this.quantity = 1;
-        this.price = product.getPrice();
-    }
 
-    public void incrementQuantity(){
-        quantity++;
-    }
-
-    public void decrementQuantity(){
-        quantity--;
-        if(quantity<=0){
-            quantity = 0;
-        }
-    }
 }

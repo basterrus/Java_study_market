@@ -1,11 +1,11 @@
 package ru.baster.spring.sample.shop.study.market.model;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,9 +35,9 @@ public class Order {
     @Column(name = "address")
     private String address;
 
-    @CreationTimestamp
     @Column(name = "phone")
     private String phone;
+    @CreationTimestamp
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

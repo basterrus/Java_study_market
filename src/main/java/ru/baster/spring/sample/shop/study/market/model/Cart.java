@@ -1,9 +1,8 @@
-package ru.baster.spring.sample.shop.study.market.util;
+package ru.baster.spring.sample.shop.study.market.model;
+
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import ru.baster.spring.sample.shop.study.market.model.CartItem;
-import ru.baster.spring.sample.shop.study.market.model.Product;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

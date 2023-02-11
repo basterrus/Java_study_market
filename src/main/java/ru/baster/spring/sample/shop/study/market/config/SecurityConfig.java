@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import ru.baster.spring.sample.shop.study.market.filters.JwtRequestFilter;
 import ru.baster.spring.sample.shop.study.market.service.UserService;
 
+
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
@@ -28,8 +29,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .cors().disable()
                 .authorizeHttpRequests()
-                .antMatchers("/orders").authenticated()
-                .antMatchers("/cart/**").authenticated()
+                .requestMatchers("/orders").authenticated()
                 .anyRequest().permitAll()
 
                 .and()
@@ -42,7 +42,9 @@ public class SecurityConfig {
                 .exceptionHandling()
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
 
-                .and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class).build();
+                .and()
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
 
     }
 
@@ -50,7 +52,6 @@ public class SecurityConfig {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();

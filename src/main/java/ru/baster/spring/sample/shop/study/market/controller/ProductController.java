@@ -1,43 +1,50 @@
 package ru.baster.spring.sample.shop.study.market.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.aspectj.lang.annotation.Aspect;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-import ru.baster.spring.sample.shop.study.market.aspect.ResourceNotFoundException;
+import ru.baster.spring.sample.shop.study.market.converters.ProductConverter;
 import ru.baster.spring.sample.shop.study.market.dto.ProductDto;
+import ru.baster.spring.sample.shop.study.market.exception.ResourceNotFoundException;
 import ru.baster.spring.sample.shop.study.market.model.Product;
 import ru.baster.spring.sample.shop.study.market.service.ProductService;
+import java.math.BigDecimal;
 
 
-import java.util.List;
-import java.util.stream.Collectors;
 
-@Aspect
+
 @RestController
-@RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
-@ResourceNotFoundException("Resource Not Found")
+@RequestMapping("/api/v1/products")
+@Slf4j
 public class ProductController {
+    private final ProductConverter productConverter;
     private final ProductService productService;
-
     @GetMapping
-    public List<ProductDto> findAllProducts() {
-        return productService.findAll().stream().map(p -> new ProductDto(p.getId(), p.getName(), p.getPrice(), p.getQuantity())).collect(Collectors.toList());
+    public Page<ProductDto> findAllProducts(
+            @RequestParam(name = "p", defaultValue = "1") Integer page,
+            @RequestParam(name = "min_price", required = false) BigDecimal minPrice,
+            @RequestParam(name = "max_price", required = false) BigDecimal maxPrice,
+            @RequestParam(name = "title_part", required = false) String titlePart
+    ) {
+        log.info("min_price {}, max_price {}, title_part {}", minPrice, maxPrice, titlePart);
+        if (page < 1) {
+            page = 1;
+        }
+        return productService.findAll(minPrice, maxPrice, titlePart, page).map(productConverter::entityToDto);
     }
 
-   /* @GetMapping("/{id}")
-    public ResponseEntity<?> findProductById(@PathVariable Long id) {
-        Optional<Product> product = productService.findById(id);
-        if (!product.isPresent()) {
-            ResponseEntity<AppError> err = new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(), "Продукт не найден, id:" + id), HttpStatus.NOT_FOUND);
-            return err;
-        }
-        return new ResponseEntity<>(product.get(), HttpStatus.OK);
-    }*/
-
     @GetMapping("/{id}")
-    public Product findProductById(@PathVariable Long id) {
-        return productService.findById(id).orElseThrow(() -> new ru.baster.spring.sample.shop.study.market.exception.ResourceNotFoundException("Продукт не найден, id:" + id));
+    public ProductDto findProductById(@PathVariable Long id) {
+        log.info("product id: {}", id);
+        Product p = productService.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format("Product id:%s not found", id)));
+        return productConverter.entityToDto(p);
+    }
+    @PostMapping
+    public ProductDto createNewProduct(@RequestBody ProductDto productDto) {
+        Product product = productService.createNewProduct(productDto);
+        return productConverter.entityToDto(product);
     }
 
     @DeleteMapping("/{id}")

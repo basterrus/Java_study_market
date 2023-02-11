@@ -30,6 +30,6 @@ public class OrderItemConverter {
     }
 
     public OrderItemDto entityToDto(OrderItem o) {
-        return new OrderItemDto(o.getId(), o.getProduct().getName(), o.getProduct().getDescription(), o.getProduct().getQuantity(), o.getProduct().getPrice(), o.getPricePerProduct());
+        return new OrderItemDto(o.getId(), o.getProduct().getTitle(), o.getProduct().getImage(), o.getQuantity(), o.getPricePerProduct(), o.getPrice());
     }
 }

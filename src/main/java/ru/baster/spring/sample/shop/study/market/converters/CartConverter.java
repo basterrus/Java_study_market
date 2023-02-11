@@ -2,8 +2,9 @@ package ru.baster.spring.sample.shop.study.market.converters;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.geelbrains.spring.winter.market.dtos.CartDto;
-import ru.geelbrains.spring.winter.market.models.Cart;
+import ru.baster.spring.sample.shop.study.market.dto.CartDto;
+import ru.baster.spring.sample.shop.study.market.util.Cart;
+
 
 @Component
 @RequiredArgsConstructor

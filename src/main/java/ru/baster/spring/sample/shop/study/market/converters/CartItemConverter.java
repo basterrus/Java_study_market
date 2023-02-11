@@ -1,8 +1,9 @@
 package ru.baster.spring.sample.shop.study.market.converters;
 
 import org.springframework.stereotype.Component;
-import ru.geelbrains.spring.winter.market.dtos.CartItemDto;
-import ru.geelbrains.spring.winter.market.models.CartItem;
+import ru.baster.spring.sample.shop.study.market.dto.CartItemDto;
+import ru.baster.spring.sample.shop.study.market.model.CartItem;
+
 
 @Component
 public class CartItemConverter {
