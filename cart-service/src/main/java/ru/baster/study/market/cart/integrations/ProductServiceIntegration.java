@@ -4,7 +4,6 @@ package ru.baster.study.market.cart.integrations;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import ru.baster.study.market.api.ProductDto;
 
 import java.util.Optional;
 

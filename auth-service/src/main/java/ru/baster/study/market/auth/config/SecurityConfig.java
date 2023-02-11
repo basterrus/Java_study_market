@@ -1,9 +1,7 @@
-package ru.baster.study.market.core.config;
+package ru.baster.study.market.auth.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ru.baster.study.market.core.filters.JwtRequestFilter;
-import ru.baster.study.market.core.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -14,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ru.baster.study.market.auth.filters.JwtRequestFilter;
+import ru.baster.study.market.auth.services.UserService;
 
 
 @Slf4j

@@ -2,8 +2,6 @@ package ru.baster.study.market.cart.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ru.baster.study.market.api.ProductDto;
-import ru.baster.study.market.api.ResourceNotFoundException;
 import ru.baster.study.market.cart.integrations.ProductServiceIntegration;
 import ru.baster.study.market.cart.models.Cart;
 import ru.baster.study.market.cart.models.CartItem;

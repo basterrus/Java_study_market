@@ -1,4 +1,4 @@
-package ru.baster.study.market.core.model;
+package ru.baster.study.market.auth.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -16,12 +16,4 @@ public class Role {
 
     @Column(name = "name")
     private String name;
-
-//    @CreationTimestamp
-//    @Column(name = "created_at")
-//    private LocalDateTime createdAt;
-//
-//    @UpdateTimestamp
-//    @Column(name = "updated_at")
-//    private LocalDateTime updatedAt;
 }

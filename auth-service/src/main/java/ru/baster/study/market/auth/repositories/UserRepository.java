@@ -1,8 +1,8 @@
-package ru.baster.study.market.core.repository;
+package ru.baster.study.market.auth.repositories;
 
-import ru.baster.study.market.core.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import ru.baster.study.market.auth.models.User;
 
 import java.util.Optional;
 

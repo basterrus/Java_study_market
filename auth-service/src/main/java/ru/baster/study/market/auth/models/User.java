@@ -1,7 +1,8 @@
-package ru.baster.study.market.core.model;
+package ru.baster.study.market.auth.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.util.Collection;
 
 
@@ -25,15 +26,7 @@ public class User {
 
     @ManyToMany
     @JoinTable(name = "user_roles",
-    joinColumns = @JoinColumn(name = "user_id"),
-    inverseJoinColumns = @JoinColumn(name = "role_id"))
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
-
-//    @CreationTimestamp
-//    @Column(name = "created_at")
-//    private LocalDateTime createdAt;
-//
-//    @CreationTimestamp
-//    @Column(name = "updated_at")
-//    private LocalDateTime updatedAt;
 }

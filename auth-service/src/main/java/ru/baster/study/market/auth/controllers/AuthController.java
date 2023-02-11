@@ -1,11 +1,15 @@
-package ru.baster.study.market.core.controller;
+package ru.baster.study.market.auth.controllers;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ru.baster.study.market.core.exception.AppError;
-import ru.baster.study.market.core.model.User;
-import ru.baster.study.market.core.service.UserService;
-import ru.baster.study.market.core.util.JwtTokenUtil;
+import org.springframework.security.authentication.AuthenticationManager;
+import ru.baster.study.market.api.AppError;
+import ru.baster.study.market.api.JwtRequest;
+import ru.baster.study.market.api.JwtResponse;
+import ru.baster.study.market.api.RegistrationUserDto;
+import ru.baster.study.market.auth.models.User;
+import ru.baster.study.market.auth.services.UserService;
+import ru.baster.study.market.auth.util.JwtTokenUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,9 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import ru.baster.study.market.core.dto.JwtRequest;
-import ru.baster.study.market.core.dto.JwtResponse;
-import ru.baster.study.market.core.dto.RegistrationUserDto;
 
 
 @RestController
@@ -30,6 +31,7 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final DaoAuthenticationProvider daoAuthenticationProvider;
+    private final AuthenticationManager authenticationManager;
 
     @PostMapping("/sign_in")
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) {
@@ -49,22 +51,13 @@ public class AuthController {
     }
 
     @PostMapping("/sign_up")
-    public ResponseEntity<?> registration(@RequestBody RegistrationUserDto registrationUserDto) {
-        if (!registrationUserDto.getPassword().equals(registrationUserDto.getConfirmPassword())) {
-            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "The password doesn't match"), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> registration(@RequestBody JwtRequest authRequest) {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+        } catch (BadCredentialsException e) {
+            return new ResponseEntity<>(new AppError("CHECK_TOKEN_ERROR", "Некорректный логин или пароль"), HttpStatus.UNAUTHORIZED);
         }
-
-        if (userService.findByUsername(registrationUserDto.getUsername()).isPresent()) {
-            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "The user already exists"), HttpStatus.BAD_REQUEST);
-        }
-
-        User user = new User();
-        user.setEmail(registrationUserDto.getEmail());
-        user.setUsername(registrationUserDto.getUsername());
-        user.setPassword(passwordEncoder.encode(registrationUserDto.getPassword()));
-        userService.createUser(user);
-
-        UserDetails userDetails = userService.loadUserByUsername(registrationUserDto.getUsername());
+        UserDetails userDetails = userService.loadUserByUsername(authRequest.getUsername());
         String token = jwtTokenUtil.generateToken(userDetails);
         return ResponseEntity.ok(new JwtResponse(token));
     }

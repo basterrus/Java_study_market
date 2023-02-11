@@ -1,9 +1,9 @@
-package ru.baster.study.market.core.service;
+package ru.baster.study.market.auth.services;
 
 import lombok.RequiredArgsConstructor;
-import ru.baster.study.market.core.repository.RoleRepository;
 import org.springframework.stereotype.Service;
-import ru.baster.study.market.core.model.Role;
+import ru.baster.study.market.auth.models.Role;
+import ru.baster.study.market.auth.repositories.RoleRepository;
 
 
 @Service
