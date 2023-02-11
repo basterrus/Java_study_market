@@ -11,7 +11,8 @@ CREATE TABLE users
     password   VARCHAR(255),
     first_name VARCHAR(255),
     last_name  VARCHAR(255),
-    email      VARCHAR(255)
+    email      VARCHAR(255),
+    created_at timestamp default current_timestamp
 
 );
 
@@ -24,9 +25,11 @@ CREATE TABLE users_roles
 
 CREATE TABLE categories
 (
-    id          bigserial PRIMARY KEY,
-    name        VARCHAR(255),
-    description VARCHAR(255)
+    id            bigserial PRIMARY KEY,
+    category_name VARCHAR(255) UNIQUE,
+    description   VARCHAR(255),
+    created_at    timestamp default current_timestamp,
+    updated_at    timestamp default current_timestamp
 );
 
 CREATE TABLE products
@@ -36,7 +39,9 @@ CREATE TABLE products
     name        VARCHAR(255),
     description VARCHAR(255),
     quantity    INT,
-    price       INT
+    price       INT,
+    created_at  timestamp default current_timestamp,
+    updated_at  timestamp default current_timestamp
 );
 
 CREATE TABLE orders
@@ -46,7 +51,9 @@ CREATE TABLE orders
     customer_name    VARCHAR(255),
     customer_phone   VARCHAR(255),
     customer_address VARCHAR(255),
-    price            INT
+    price            INT,
+    created_at       timestamp default current_timestamp,
+    updated_at       timestamp default current_timestamp
 );
 
 CREATE TABLE order_items
@@ -55,7 +62,9 @@ CREATE TABLE order_items
     product_id bigint REFERENCES products (id),
     order_id   bigint REFERENCES orders (id),
     quantity   INT,
-    price      INT
+    price      INT,
+    created_at timestamp default current_timestamp,
+    updated_at timestamp default current_timestamp
 );
 
 INSERT INTO roles(name)
@@ -72,7 +81,7 @@ INSERT INTO users_roles(user_id, role_id)
 VALUES (1, 1),
        (3, 2);
 
-INSERT INTO categories (name, description)
+INSERT INTO categories (category_name, description)
 VALUES ('Процессоры', 'Категория "Процессоры"'),
        ('Материнские платы', 'Категория "Материнские платы"'),
        ('Оперативная память', 'Категория "Оперативная память"'),
@@ -83,7 +92,8 @@ VALUES ('Процессор Intel Celeron G4900 OEM', 1, 'Celeron G4900', 5, 500
        ('Процессор AMD FX-4300 BOX', 1, 'AMD FX-4300 BOX', 8, 800),
        ('Материнская плата Esonic G31CHL3', 2, 'Esonic G31CHL3', 8, 900),
        ('Материнская плата MSI H310M PRO-VDH', 2, 'MSI H310M PRO-VDH', 8, 1000),
-       ('Оперативная память AMD Radeon R5 Entertainment Series [R532G1601U1S-U] 2 ГБ', 3, 'AMD Radeon R5 Entertainment Series [R532G1601U1S-U]', 8, 1200),
+       ('Оперативная память AMD Radeon R5 Entertainment Series [R532G1601U1S-U] 2 ГБ', 3,
+        'AMD Radeon R5 Entertainment Series [R532G1601U1S-U]', 8, 1200),
        ('Оперативная память QUMO [QUM4U-4G2666C19] 4 ГБ', 3, 'QUMO [QUM4U-4G2666C19] 4 ГБ', 8, 1400),
        ('0.5 ТБ Жесткий диск WD Black [WD5000LPSX]', 4, 'WD Black [WD5000LPSX]', 8, 1600),
        ('1 ТБ Жесткий диск Toshiba L200 Slim [HDWL110UZSVA]', 4, 'Toshiba L200 Slim [HDWL110UZSVA]', 8, 1800);
