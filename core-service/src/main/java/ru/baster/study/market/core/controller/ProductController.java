@@ -1,0 +1,55 @@
+package ru.baster.study.market.core.controller;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import ru.baster.study.market.core.converters.ProductConverter;
+import ru.baster.study.market.core.exception.ResourceNotFoundException;
+import ru.baster.study.market.core.service.ProductService;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
+import ru.baster.study.market.core.dto.ProductDto;
+import ru.baster.study.market.core.model.Product;
+
+import java.math.BigDecimal;
+
+
+
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/products")
+@Slf4j
+public class ProductController {
+    private final ProductConverter productConverter;
+    private final ProductService productService;
+    @GetMapping
+    public Page<ProductDto> findAllProducts(
+            @RequestParam(name = "p", defaultValue = "1") Integer page,
+            @RequestParam(name = "min_price", required = false) BigDecimal minPrice,
+            @RequestParam(name = "max_price", required = false) BigDecimal maxPrice,
+            @RequestParam(name = "title_part", required = false) String titlePart
+    ) {
+        log.info("min_price {}, max_price {}, title_part {}", minPrice, maxPrice, titlePart);
+        if (page < 1) {
+            page = 1;
+        }
+        return productService.findAll(minPrice, maxPrice, titlePart, page).map(productConverter::entityToDto);
+    }
+
+    @GetMapping("/{id}")
+    public ProductDto findProductById(@PathVariable Long id) {
+        log.info("product id: {}", id);
+        Product p = productService.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format("Product id:%s not found", id)));
+        return productConverter.entityToDto(p);
+    }
+    @PostMapping
+    public ProductDto createNewProduct(@RequestBody ProductDto productDto) {
+        Product product = productService.createNewProduct(productDto);
+        return productConverter.entityToDto(product);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteProductById(@PathVariable Long id) {
+        productService.deleteById(id);
+    }
+}
