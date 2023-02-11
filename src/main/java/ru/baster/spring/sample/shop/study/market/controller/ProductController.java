@@ -1,9 +1,10 @@
 package ru.baster.spring.sample.shop.study.market.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.web.bind.annotation.*;
+import ru.baster.spring.sample.shop.study.market.aspect.ResourceNotFoundException;
 import ru.baster.spring.sample.shop.study.market.dto.ProductDto;
-import ru.baster.spring.sample.shop.study.market.exception.ResourceNotFoundException;
 import ru.baster.spring.sample.shop.study.market.model.Product;
 import ru.baster.spring.sample.shop.study.market.service.ProductService;
 
@@ -11,9 +12,11 @@ import ru.baster.spring.sample.shop.study.market.service.ProductService;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Aspect
 @RestController
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
+@ResourceNotFoundException("Resource Not Found")
 public class ProductController {
     private final ProductService productService;
 
@@ -34,7 +37,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public Product findProductById(@PathVariable Long id) {
-        return productService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Продукт не найден, id:" + id));
+        return productService.findById(id).orElseThrow(() -> new ru.baster.spring.sample.shop.study.market.exception.ResourceNotFoundException("Продукт не найден, id:" + id));
     }
 
     @DeleteMapping("/{id}")
