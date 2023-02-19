@@ -1,6 +1,5 @@
 package ru.baster.spring.sample.shop.study.market.util;
 
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -13,13 +12,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
 
 @Component
 public class JwtTokenUtil {
     @Value("${jwt.secret}")
     private String secret;
-
     @Value("${jwt.lifetime}")
     private Integer jwtLifetime;
 
@@ -27,11 +25,12 @@ public class JwtTokenUtil {
         Map<String, Object> claims = new HashMap<>();
         List<String> rolesList = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
+                .toList();
         claims.put("roles", rolesList);
 
         Date issuedDate = new Date();
         Date expiredDate = new Date(issuedDate.getTime() + jwtLifetime);
+
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
@@ -44,6 +43,7 @@ public class JwtTokenUtil {
     public String getUsernameFromToken(String token) {
         return getAllClaimsFromToken(token).getSubject();
     }
+
 
     public List<String> getRoles(String token) {
         return getAllClaimsFromToken(token).get("roles", List.class);

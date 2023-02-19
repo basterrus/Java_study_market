@@ -1,12 +1,9 @@
 package ru.baster.spring.sample.shop.study.market.model;
 
-
+import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Collection;
+
 
 @Entity
 @Data
@@ -23,22 +20,20 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "first_name")
-    private String first_name;
-
-    @Column(name = "last_name")
-    private String last_name;
-
     @Column(name = "email")
     private String email;
 
-    @CreationTimestamp
-    @Column(name="created_at")
-    private LocalDateTime created_at;
-
     @ManyToMany
-    @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name = "user_roles",
+    joinColumns = @JoinColumn(name = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
+
+//    @CreationTimestamp
+//    @Column(name = "created_at")
+//    private LocalDateTime createdAt;
+//
+//    @CreationTimestamp
+//    @Column(name = "updated_at")
+//    private LocalDateTime updatedAt;
 }

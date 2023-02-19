@@ -6,14 +6,14 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
-@Table(name = "products")
+@Table(name = "categories")
 @NoArgsConstructor
-public class Product {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -22,24 +22,8 @@ public class Product {
     @Column(name = "title")
     private String title;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @Column(name = "price")
-    private BigDecimal price;
-
-    @Column(name = "height")
-    private int height;
-
-    @Column(name = "weight")
-    private int weight;
-
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "image")
-    private String image;
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
 
     @CreationTimestamp
     @Column(name = "created_at")

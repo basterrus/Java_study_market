@@ -5,6 +5,7 @@ import ru.baster.spring.sample.shop.study.market.model.Product;
 
 import java.math.BigDecimal;
 
+
 public class ProductSpecification {
     public static Specification<Product> priceGranderOrEqualsThen(BigDecimal price) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("price"), price);

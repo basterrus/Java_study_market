@@ -21,5 +21,8 @@ spring:
         web-allow-others: false
 
 jwt:
-  secret: sjofpisgohs34342q1eofhohgouhgsehfpsief
-  lifetime: 36000000
+  secret: KdsjSKJefsfs49*#*#435DFCregdfvc453*Difjslkj834rj${$JJDKsj34jLKSJDF*$FSLk
+  lifetime: 30000000
+
+cart-service:
+  cart-prefix: study_cart_
