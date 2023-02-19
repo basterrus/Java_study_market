@@ -2,7 +2,7 @@ package ru.baster.study.market.cart.util;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import ru.baster.study.market.core.model.CartItem;
+import ru.baster.study.market.cart.models.CartItem;
 import ru.baster.study.market.core.model.Product;
 
 import java.math.BigDecimal;
