@@ -2,13 +2,13 @@ package ru.baster.study.market.core.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.jaxb.SpringDataJaxb;
+import ru.baster.study.market.auth.exceptions.ResourceNotFoundException;
+import ru.baster.study.market.auth.models.User;
+import ru.baster.study.market.auth.services.UserService;
 import ru.baster.study.market.core.converters.OrderConverter;
-import ru.baster.study.market.core.dto.OrderDto;
-import ru.baster.study.market.core.exception.ResourceNotFoundException;
 import ru.baster.study.market.core.model.OrderData;
-import ru.baster.study.market.core.model.User;
 import ru.baster.study.market.core.service.OrderService;
-import ru.baster.study.market.core.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +34,7 @@ public class OrderController {
     }
 
     @GetMapping
-    public List<OrderDto> getOrders(Principal principal) {
+    public List<SpringDataJaxb.OrderDto> getOrders(Principal principal) {
         User user = userService.findByUsername(principal.getName()).orElseThrow(() -> new ResourceNotFoundException(String.format("User with username: %s not found", principal.getName())));
         return orderService.getAllOrdersByUser(user).stream().map(orderConverter::entityToDto).toList();
     }

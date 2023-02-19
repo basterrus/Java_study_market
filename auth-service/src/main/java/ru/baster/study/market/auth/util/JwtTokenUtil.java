@@ -1,4 +1,4 @@
-package ru.baster.study.market.core.util;
+package ru.baster.study.market.auth.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

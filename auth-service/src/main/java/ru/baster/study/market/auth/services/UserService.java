@@ -1,4 +1,4 @@
-package ru.baster.study.market.core.service;
+package ru.baster.study.market.auth.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,10 +8,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.baster.study.market.core.exception.ResourceNotFoundException;
-import ru.baster.study.market.core.model.Role;
-import ru.baster.study.market.core.model.User;
-import ru.baster.study.market.core.repository.UserRepository;
+import ru.baster.study.market.auth.exceptions.ResourceNotFoundException;
+import ru.baster.study.market.auth.models.Role;
+import ru.baster.study.market.auth.models.User;
+import ru.baster.study.market.auth.repositories.UserRepository;
 
 
 import java.util.Collection;
