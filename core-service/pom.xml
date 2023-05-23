@@ -92,21 +92,18 @@
             <artifactId>jackson-core</artifactId>
             <version>2.14.2</version>
         </dependency>
-        <dependency>
-            <groupId>ru.baster.spring.study.market</groupId>
-            <artifactId>auth-service</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>ru.baster.spring.study.market</groupId>
-            <artifactId>auth-service</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
 
+        <dependency>
+            <groupId>ru.baster.spring.study.market</groupId>
+            <artifactId>auth-service</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+        </dependency>
     </dependencies>
-
 
     <build>
         <plugins>
